@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter_course/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter_course/common_widgets/custom_raised_button.dart';
@@ -19,7 +20,7 @@ class SignInPage extends StatelessWidget {
 Widget _buildContent() {
   //underscore(_) = Private, accessible only at File Level
   return Padding(
-    padding: EdgeInsets.all(16),  //Padding from the sides
+    padding: EdgeInsets.all(16), //Padding from the sides
     child: Column(
       // Takes a list of widgets
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,25 +35,41 @@ Widget _buildContent() {
           ),
         ),
         SizedBox(height: 48.0), //SizedBox to add padding between Containers
+        CustomRaisedButton(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Image.asset('images/google-logo.png'),
+              Text('Sign in with Google'),
+              Opacity(
+                  opacity: 0.0,
+                  child: Image.asset('images/google-logo.png')
+              ),
+            ],
+          ),
+          color: Colors.white,
+          onPressed: () {},
+        ),
+        SizedBox(height: 8.0),
         SignInButton(
           text: 'Sign in with Google',
           textColor: Colors.black87,
           color: Colors.white,
-          onPressed: (){},
+          onPressed: () {},
         ),
         SizedBox(height: 8.0),
         SignInButton(
           text: 'Sign in with Facebook',
           textColor: Colors.white,
           color: Color(0xFF334D92),
-          onPressed: (){},
+          onPressed: () {},
         ),
         SizedBox(height: 8.0),
         SignInButton(
           text: 'Sign in with email',
           textColor: Colors.white,
           color: Colors.teal[700],
-          onPressed: (){},
+          onPressed: () {},
         ),
         SizedBox(height: 8.0),
         Text(
@@ -65,7 +82,7 @@ Widget _buildContent() {
           text: 'Go anonymous',
           textColor: Colors.black,
           color: Colors.lime[300],
-          onPressed: (){},
+          onPressed: () {},
         ),
       ],
     ),
