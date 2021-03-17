@@ -8,9 +8,9 @@ class CustomRaisedButton extends StatelessWidget {
     this.borderRadius: 2.0, //Using (:) to set default values
     this.height: 50.0,  //Default value
     this.onPressed
-  });
-  final Widget child;
-  final Color color;
+  }) : assert(borderRadius != null);  // Assertions are useful runtime checks...
+  final Widget child;                 // ...to highlight programming error...
+  final Color color;                  // ...to make debugging easier.
   final double borderRadius;
   final double height;
   final VoidCallback onPressed;
