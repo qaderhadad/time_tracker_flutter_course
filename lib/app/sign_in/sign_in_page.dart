@@ -38,7 +38,7 @@ Widget _buildContent() {
         SizedBox(height: 48.0), //SizedBox to add padding between Containers
         SocialSignInButton(
           assetName: 'images/google-logo.png',
-          text: 'Sign in with Google ',
+          text: 'Sign in with Google',
           textColor: Colors.black87,
           color: Colors.white,
           onPressed: () {},
