@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/sign_in/landing_page.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 
@@ -14,13 +15,14 @@ void main() async {  // (async) bc we're using an Asynchronous method (await)
 class MyApp extends StatelessWidget {
   @override //Override superClass build() method
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Time Tracker",
-      theme: ThemeData(
-        primarySwatch: Colors.indigo
-    ),
-      home: LandingPage(
-        auth: Auth(),
+    return Provider<AuthBase>(
+      create: (context) => Auth(),
+      child: MaterialApp(
+        title: "Time Tracker",
+        theme: ThemeData(
+          primarySwatch: Colors.indigo
+      ),
+        home: LandingPage(),
       ),
     );
   }
