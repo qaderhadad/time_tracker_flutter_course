@@ -16,10 +16,10 @@ class SignInBloc {
 
   void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
 
-  Future<User> _signIn(Future<User> Function() singInMethod) async {
+  Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
       _setIsLoading(true);
-      return await auth.signInAnonymously();
+      return await signInMethod();
     } catch (e) {
       _setIsLoading(false);
       rethrow;
