@@ -1,13 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/common_widgets/show_alert_dialog.dart';
-import 'package:time_tracker_flutter_course/common_widgets/show_exception_alert_dialog.dart';
+import 'package:time_tracker_flutter_course/home/jobs/job_list_tile.dart';
+import 'package:time_tracker_flutter_course/home/jobs/list_items_builder.dart';
 import 'package:time_tracker_flutter_course/models/job.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
-
-import 'add_job_page.dart';
+import 'edit_job_page.dart';
 
 class JobsPage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
@@ -53,7 +52,7 @@ class JobsPage extends StatelessWidget {
       body: _buildContents(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => AddJobPage.show(context),
+        onPressed: () => EditJobPage.show(context),
       ),
     );
   }
@@ -63,15 +62,13 @@ class JobsPage extends StatelessWidget {
     return StreamBuilder<List<Job>>(
       stream: database.jobsStream(),
       builder: (context, snapshot){
-        if(snapshot.hasData){
-          final jobs = snapshot.data;
-          final children = jobs.map((job) => Text(job.name)).toList();
-          return ListView(children: children);
-        }
-        if(snapshot.hasError){ //Always check erros when using SS & SB
-          return Center(child: Text('Some error occurred'));
-        }
-        return Center(child: CircularProgressIndicator());
+        return ListItemsBuilder<Job>(
+          snapshot: snapshot,
+          itemBuilder: (context, job) =>  JobListTile(
+            job: job,
+            onTap: () => EditJobPage.show(context, job: job),
+          )
+        );
       },
     );
   }
