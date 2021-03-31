@@ -30,9 +30,16 @@ class ListItemsBuilder<T> extends StatelessWidget {
   //For when we want to show a list that has a large number of items, only the items,
   //that are visible are loaded, better for performance.
   Widget _buildList(List<T> items){
-    return ListView.builder(
-        itemCount: items.length,
-      itemBuilder: (context, index) => itemBuilder(context, items[index]),
+    return ListView.separated(
+        itemCount: items.length + 2,
+      separatorBuilder: (context, index) => Divider(height: 0.5),
+      itemBuilder: (context, index) {
+          //Add 2 extra containers to show extra separators
+          if(index == 0 || index == items.length + 1){
+            return Container();
+          }
+          return itemBuilder(context, items[index - 1]);
+      },
     );
   }
 }
