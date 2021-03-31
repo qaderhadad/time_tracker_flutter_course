@@ -1,25 +1,30 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/models/job.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
 class EditJobPage extends StatefulWidget {
-  const EditJobPage({Key key, @required this.database, this.job}) : super(key: key);
+  const EditJobPage({Key key, @required this.database, this.job})
+      : super(key: key);
   final Database database;
   final Job job;
 
-  static Future<void> show(BuildContext context, {Database database, Job job}) async {
-    await Navigator.of(context).push(
+  static Future<void> show(
+    BuildContext context, {
+    Database database,
+    Job job,
+  }) async {
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-          builder: (context) => EditJobPage(database: database, job: job),
-      fullscreenDialog: true,
+        builder: (context) => EditJobPage(database: database, job: job),
+        fullscreenDialog: true,
       ),
     );
   }
+
   @override
   _EditJobPageState createState() => _EditJobPageState();
 }
@@ -31,32 +36,32 @@ class _EditJobPageState extends State<EditJobPage> {
   int _ratePerHour;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    if(widget.job != null){
+    if (widget.job != null) {
       _name = widget.job.name;
       _ratePerHour = widget.job.ratePerHour;
     }
   }
 
-  bool _validateAndSaveForm(){
+  bool _validateAndSaveForm() {
     final form = _formKey.currentState;
-    if(form.validate()){
+    if (form.validate()) {
       form.save();
       return true;
     }
     return false;
   }
 
-  Future<void> _submit() async{
-    if(_validateAndSaveForm()){
-      try{
+  Future<void> _submit() async {
+    if (_validateAndSaveForm()) {
+      try {
         final jobs = await widget.database.jobsStream().first;
         final allNames = jobs.map((job) => job.name).toList();
-        if(widget.job != null){
+        if (widget.job != null) {
           allNames.remove(widget.job.name);
         }
-        if(allNames.contains(_name)){
+        if (allNames.contains(_name)) {
           showAlertDialog(
             context,
             title: 'Name already used 7abeby',
@@ -69,12 +74,9 @@ class _EditJobPageState extends State<EditJobPage> {
           await widget.database.setJob(job);
           Navigator.of(context).pop();
         }
-      } on FirebaseException catch(e) {
-        showExceptionAlertDialog(
-            context,
-            title: 'Operation Failed',
-            exception: e
-        );
+      } on FirebaseException catch (e) {
+        showExceptionAlertDialog(context,
+            title: 'Operation Failed', exception: e);
       }
     }
   }
@@ -83,15 +85,17 @@ class _EditJobPageState extends State<EditJobPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2.0,
-        title: Text(widget.job == null ? 'New Job' : 'Edit Job'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Save', style: TextStyle(fontSize: 18, color: Colors.white),),
-            onPressed: _submit,
-          )
-        ]
-      ),
+          elevation: 2.0,
+          title: Text(widget.job == null ? 'New Job' : 'Edit Job'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Save',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              onPressed: _submit,
+            )
+          ]),
       body: _buildContents(),
       backgroundColor: Colors.grey[200],
     );
@@ -129,14 +133,14 @@ class _EditJobPageState extends State<EditJobPage> {
         validator: (value) => value.isNotEmpty ? null : 'Name Can\'t be empty',
         onSaved: (value) => _name = value,
       ),
-    TextFormField(
-      decoration: InputDecoration(labelText: 'Rate per hour'),
-       initialValue: _ratePerHour != null ? '$_ratePerHour' : null,
+      TextFormField(
+        decoration: InputDecoration(labelText: 'Rate per hour'),
+        initialValue: _ratePerHour != null ? '$_ratePerHour' : null,
         keyboardType: TextInputType.numberWithOptions(
           signed: false,
           decimal: false,
         ),
-      onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
+        onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
       ),
     ];
   }
