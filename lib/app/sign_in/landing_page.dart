@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'file:///C:/Users/AbdulQader/AndroidStudioProjects/time_tracker_flutter_course/lib/home/jobs_page.dart';
 import 'package:time_tracker_flutter_course/app/sign_in/sign_in_page.dart';
+import 'package:time_tracker_flutter_course/home/jobs/jobs_page.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
